@@ -4,7 +4,7 @@ function extractTwitterUsernames() {
     var url = this.href;
 
     var usernameMatch = url.match(/twitter.com\/(\w*)/)
-    if (usernameMatch !== null && usernameMatch[1] !== "intent") {
+    if (usernameMatch !== null && usernameMatch[1] !== "intent" && usernameMatch[1] !== "share") {
       result.push(usernameMatch[1]);
     }
 
