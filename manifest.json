@@ -1,7 +1,7 @@
 {
   "name": "Extract Twitter Username",
   "description": "Extracts Twitter username if found on the page",
-  "version": "0.1",
+  "version": "0.1.1",
   "icons": {
     "16": "icon-16.png",
     "48": "icon-48.png",
