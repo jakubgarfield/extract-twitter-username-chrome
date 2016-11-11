@@ -3,18 +3,26 @@ function extractTwitterUsernames() {
   $("a[href*='twitter']").each(function(link) {
     var url = this.href;
 
-    var usernameMatch = url.match(/twitter.com\/(\w*)/)
-    if (usernameMatch !== null && usernameMatch[1] !== "intent" && usernameMatch[1] !== "share") {
+    var usernameMatch = url.match(/twitter.com\/(?:@){0,1}(\w*)/)
+    if (usernameMatch !== null && !["intent", "search", "share", "home"].includes(usernameMatch[1])) {
       result.push(usernameMatch[1]);
+      return;
     }
 
-    var viaMatch = url.match(/via%20@(\w*)/);
+    var viaMatch = url.match(/via[%20@|=](\w*)/);
     if (viaMatch !== null) {
       result.push(viaMatch[1]);
+      return;
+    }
+
+    var screenNameMatch = url.match(/screen_name=(\w*)/);
+    if (screenNameMatch !== null) {
+      result.push(screenNameMatch[1]);
+      return;
     }
   });
 
-  return result.filter(function(item, i, ar) { return ar.indexOf(item) === i; });;
+  return result.map(function(i) { return i.toLowerCase(); }).filter(function(item, i, ar) { return ar.indexOf(item) === i; });
 }
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
