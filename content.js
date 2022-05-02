@@ -21,6 +21,15 @@ function extractTwitterUsernames() {
       return;
     }
   });
+  if (result.length === 0) {
+    $("meta[name='twitter:creator']").each(function(meta) {
+      var content = this.content;
+      if (content != null && content.startsWith("@")) {
+        result.push(content.substring(1));
+        return;
+      }
+    });
+  }
 
   return result.map(function(i) { return i.toLowerCase(); }).filter(function(item, i, ar) { return ar.indexOf(item) === i; });
 }
