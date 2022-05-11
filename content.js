@@ -29,7 +29,16 @@ function extractTwitterUsernames() {
         return;
       }
     });
-    }
+    $("iframe[id*='twitter-widget-']").each(function(iframe) {
+      var widgetId = this.dataset.widgetId;
+
+      var profileMatch = widgetId.match(/profile:(\w*)/);
+      if (profileMatch !== null && profileMatch[1] !== "") {
+        result.push(profileMatch[1]);
+        return;
+      }
+    });
+  }
 
   return result.map(function(i) { return i.toLowerCase(); }).filter(function(item, i, ar) { return ar.indexOf(item) === i; });
 }
