@@ -12,24 +12,33 @@ function extractTwitterUsernames() {
       var url = this.href;
   
       var usernameMatch = url.match(/twitter.com\/(?:@){0,1}(\w*)/)
-      if (usernameMatch !== null && !["intent", "search", "share", "home"].includes(usernameMatch[1])) {
+      if (usernameMatch !== null && usernameMatch[1] !== "" && !["intent", "search", "share", "home"].includes(usernameMatch[1])) {
         result.push(usernameMatch[1]);
         return;
       }
   
       var viaMatch = url.match(/via[%20@|=](\w*)/);
-      if (viaMatch !== null) {
+      if (viaMatch !== null && viaMatch[1] !== "") {
         result.push(viaMatch[1]);
         return;
       }
   
       var screenNameMatch = url.match(/screen_name=(\w*)/);
-      if (screenNameMatch !== null) {
+      if (screenNameMatch !== null && screenNameMatch[1] !== "") {
         result.push(screenNameMatch[1]);
         return;
       }
     });
-    }
+    $("iframe[id*='twitter-widget-']").each(function(iframe) {
+      var widgetId = this.dataset.widgetId;
+
+      var profileMatch = widgetId.match(/profile:(\w*)/);
+      if (profileMatch !== null && profileMatch[1] !== "") {
+        result.push(profileMatch[1]);
+        return;
+      }
+    });
+  }
 
   return result.map(function(i) { return i.toLowerCase(); }).filter(function(item, i, ar) { return ar.indexOf(item) === i; });
 }
