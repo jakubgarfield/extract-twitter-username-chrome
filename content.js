@@ -20,13 +20,14 @@ function extractTwitterUsernames() {
             return;
           }
         }
-        result.push(content.substring(1));
-        return;
+        if (content.substring(1)) {
+          result.push(content.substring(1));
+          return;
+        }
       }
     });
     
     $("a[href*='twitter']").each(function(index, link) {
-
       var url = this.href;
       var usernameMatch = decodeURIComponent(url).match(/twitter.com\/(?:@){0,1}(\w*)/);
 
