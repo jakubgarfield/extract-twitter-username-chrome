@@ -1,26 +1,19 @@
-function isValidUrl(urlString) {
-  try { 
-    return Boolean(new URL(urlString)); 
-  }
-  catch(e){ 
-    return false; 
-  }
-}
-
 function extractTwitterUsernames() {
   var result = [];
   if (result.length === 0) {
     $("meta[name='twitter:creator']").each(function(meta) {
       var content = this.content;
       if (content !== null && content.startsWith("@")) {
-        if (isValidUrl(content.substring(1))) {
+        if (content.substring(1).includes('twitter.com')) {
           var usernameMatch = decodeURIComponent(content.substring(1)).match(/twitter.com\/(?:@){0,1}(\w*)/);
           if (usernameMatch !== null && usernameMatch[1] !== "") {
             result.push(usernameMatch[1]);
             return;
           }
         }
+
         if (content.substring(1)) {
+          console.log(content.substring(1));
           result.push(content.substring(1));
           return;
         }

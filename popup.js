@@ -11,6 +11,8 @@ function copyToClipboard(text) {
 $(function() {
   chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(([tab]) => {
     chrome.tabs.sendMessage(tab.id, { action: "getTwitterUsernames" }).then((response) => {
+      console.log(response);
+
       if (response && response.usernames && response.usernames.length > 0) {
         copyToClipboard(response.usernames[0]);
         response.usernames.forEach(function(username) {
