@@ -9,12 +9,19 @@ function copyToClipboard(text) {
 }
 
 $(function() {
-  chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.sendMessage(tab.id, {action: "getTwitterUsernames"}, function(response) {
-      if (response.usernames.length > 0) {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(([tab]) => {
+    chrome.tabs.sendMessage(tab.id, { action: "getTwitterUsernames" }).then((response) => {
+      console.log(response);
+
+      if (response && response.usernames && response.usernames.length > 0) {
         copyToClipboard(response.usernames[0]);
         response.usernames.forEach(function(username) {
-          $("#usernames").append("<li>" + username + "</li>");
+          $("#usernames").append("<li><span>" + username + "</span><button>Copy</button></li>");
+        });
+
+        // copy button event listener
+        $('#usernames').on("click", "li button", function(e) {
+          copyToClipboard(e.target.parentElement.querySelector('span').innerText);
         });
       } else {
         $("#usernames").append("<li>Not found</li>");
