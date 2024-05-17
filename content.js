@@ -1,31 +1,30 @@
 function extractTwitterUsernames() {
   var result = [];
   if (result.length === 0) {
-    $("meta[name='twitter:creator']").each(function(meta) {
+    $("meta[name='twitter:creator'], meta[name='x:creator']").each(function(meta) {
       var content = this.content;
       if (content !== null && content.startsWith("@")) {
-        if (content.substring(1).includes('twitter.com')) {
-          var usernameMatch = decodeURIComponent(content.substring(1)).match(/twitter.com\/(?:@){0,1}(\w*)/);
-          if (usernameMatch !== null && usernameMatch[1] !== "") {
-            result.push(usernameMatch[1]);
+        if (content.substring(1).includes('twitter.com') || content.substring(1).includes('x.com')) {
+          var usernameMatch = decodeURIComponent(content.substring(1)).match(/(twitter\.com|x\.com)\/(?:@){0,1}(\w*)/);
+          if (usernameMatch !== null && usernameMatch[2] !== "") {
+            result.push(usernameMatch[2]);
             return;
           }
         }
 
         if (content.substring(1)) {
-          console.log(content.substring(1));
           result.push(content.substring(1));
           return;
         }
       }
     });
     
-    $("a[href*='twitter']").each(function(index, link) {
+    $("a[href*='twitter'], a[href*='x']").each(function(index, link) {
       var url = this.href;
-      var usernameMatch = decodeURIComponent(url).match(/twitter.com\/(?:@){0,1}(\w*)/);
+      var usernameMatch = decodeURIComponent(url).match(/(twitter\.com|x\.com)\/(?:@){0,1}(\w*)/);
 
-      if (usernameMatch !== null && usernameMatch[1] !== "" && !["intent", "search", "share", "home"].includes(usernameMatch[1])) {
-        result.push(usernameMatch[1]);
+      if (usernameMatch !== null && usernameMatch[2] !== "" && !["intent", "search", "share", "home"].includes(usernameMatch[1])) {
+        result.push(usernameMatch[2]);
         return;
       }
   
@@ -41,7 +40,7 @@ function extractTwitterUsernames() {
         return;
       }
     });
-    $("iframe[id*='twitter-widget-']").each(function(iframe) {
+    $("iframe[id*='twitter-widget-'], iframe[id*='x-widget-']").each(function(iframe) {
       var widgetId = this.dataset.widgetId;
       var screenName = this.dataset.screenName;
 
