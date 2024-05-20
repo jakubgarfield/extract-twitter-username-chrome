@@ -23,7 +23,7 @@ function extractTwitterUsernames() {
       var url = this.href;
       var usernameMatch = decodeURIComponent(url).match(/(twitter\.com|x\.com)\/(?:@){0,1}(\w*)/);
 
-      if (usernameMatch !== null && usernameMatch[2] !== "" && !["intent", "search", "share", "home"].includes(usernameMatch[1])) {
+      if (usernameMatch !== null && usernameMatch[2] !== "" && !["intent", "search", "share", "home"].includes(usernameMatch[2])) {
         result.push(usernameMatch[2]);
         return;
       }
