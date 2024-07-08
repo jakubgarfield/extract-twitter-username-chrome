@@ -5,7 +5,7 @@ function extractTwitterUsernames() {
       var content = this.content;
       if (content !== null && content.startsWith("@")) {
         if (content.substring(1).includes('twitter.com') || content.substring(1).includes('x.com')) {
-          var usernameMatch = decodeURIComponent(content.substring(1)).match(/(twitter\.com|x\.com)\/(?:@){0,1}(\w*)/);
+          var usernameMatch = decodeURIComponent(content.substring(1)).match(/(twitter\.com|\/x\.com)\/(?:@){0,1}(\w*)/);
           if (usernameMatch !== null && usernameMatch[2] !== "") {
             result.push(usernameMatch[2]);
             return;
@@ -21,7 +21,7 @@ function extractTwitterUsernames() {
     
     $("a[href*='twitter'], a[href*='x']").each(function(index, link) {
       var url = this.href;
-      var usernameMatch = decodeURIComponent(url).match(/(twitter\.com|x\.com)\/(?:@){0,1}(\w*)/);
+      var usernameMatch = decodeURIComponent(url).match(/(twitter\.com|\/x\.com)\/(?:@){0,1}(\w*)/);
 
       if (usernameMatch !== null && usernameMatch[2] !== "" && !["intent", "search", "share", "home"].includes(usernameMatch[2])) {
         result.push(usernameMatch[2]);
